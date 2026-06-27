@@ -19,11 +19,11 @@ export const addScore = async (id, exam, score) => {
 }
 
 export const findStudentByName = async (name) => {
-    // TODO: Implement findestudentbyname
+    // TODO: Implement findStudentByName
 }
 
 export const countStudentByNames = async (names) => {
-    // TODO: Implement findStudentByName
+    // TODO: Implement countStudentByNames
 }
 
 export const findStudentByMinScore = async (exam, minScore) => {
