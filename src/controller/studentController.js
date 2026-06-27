@@ -1,5 +1,4 @@
 import * as service from '../service/studentService.js';
-import {findStudentByName} from "../service/studentService.js";
 
 export const addStudent = async (req, res) => {
     const success = await service.addStudent(req.body);
@@ -12,7 +11,7 @@ export const addStudent = async (req, res) => {
 
 export const findStudent = async (req, res) => {
     const student = await service.findStudent(req.params.id);
-    if (student) {
+    if(student) {
         return res.json(student);
     } else {
         return res.status(404).send({
@@ -20,7 +19,7 @@ export const findStudent = async (req, res) => {
             "status": 404,
             "error": "Not Found",
             "message": `Student with id ${req.params.id} not found`,
-            "path": req.params
+            "path": req.path
         });
     }
 }
@@ -71,16 +70,16 @@ export const addScore = async (req, res) => {
 }
 
 export const findByName = async (req, res) => {
-    const students = await service.findStudentByName(req.params.name);
+    const students = await service.findStudentsByName(req.params.name);
     return res.json(students);
 }
 
 export const countByNames = async (req, res) => {
-    const count = await service.countStudentByNames(req.query.names);
+    const count = await service.countStudentsByNames(req.query.names);
     return res.json(count);
 }
 
 export const findByMinScore = async (req, res) => {
-    const students = await service.findStudentByMinScore(req.params.exam, req.params.minScore);
+    const students = await service.findStudentsByMinScore(req.params.exam, req.params.minScore);
     return res.json(students);
 }
