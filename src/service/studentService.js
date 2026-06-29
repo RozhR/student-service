@@ -1,18 +1,27 @@
-import Student from '../model/student.js'
+import * as repo from '../repository/studentRepository.js';
+import {findStudentById} from "../repository/studentRepository.js";
 
-export const createStudent = student => Student.create(student);
-
-export const findStudentById = id => Student.findById(id).select({password: 0}).lean().exec();
-
-export const deleteStudent = id => Student.findByIdAndDelete(id).select({password: 0}).lean().exec();
-
-export const updateStudent = (id, data) => Student.findByIdAndUpdate(id, data, {returnDocument: 'after'}).select({scores: 0}).lean().exec();
-
-export const findStudentsByName = name => Student.find({name: new RegExp(`^${name}$`, 'i')}).select({password: 0}).lean().exec();
-
-export const countStudentsByNames = names => {
-    const regexConditions = names.map(name => ({name: {$regex: `^${name}$`, $options: 'i'}}));
-    return Student.countDocuments({$or: regexConditions});
+export const addStudent = async ({id, name, password}) => {
+    if (await findStudentById(id)) {
+        return false;
+    }
+    await repo.createStudent({_id: id, name, password});
+    return true;
 }
 
-export const findStudentsByMinScore = (exam, minScore) => Student.find({[`scores.${exam}`]: {$gte: minScore}}).select({password: 0}).lean().exec();
+export const findStudent = async (id) => await repo.findStudentById(+id);
+
+export const deleteStudent = async (id) => await repo.deleteStudent(+id);
+
+export const updateStudent = async (id, data) => await repo.updateStudent(+id, data);
+
+export const addScore = async (id, exam, score) => repo.updateStudent(+id, {[`scores.${exam}`]: score});
+
+export const findStudentsByName = async (name) => await repo.findStudentsByName(name);
+
+export const countStudentsByNames = async (names) => {
+    names = Array.isArray(names) ? names : [names];
+    return repo.countStudentsByNames(names);
+}
+
+export const findStudentsByMinScore = async (exam, minScore) => (await repo.findStudentsByMinScore(exam, +minScore));

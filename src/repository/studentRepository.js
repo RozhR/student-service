@@ -2,13 +2,13 @@ import Student from '../model/student.js'
 
 export const createStudent = student => Student.create(student);
 
-export const findStudentById = id => Student.findById(id).select({password: 0}).lean().exec();
+export const findStudentById = id => Student.findById(id).select({password: 0}).exec();
 
-export const deleteStudent = id => Student.findByIdAndDelete(id).select({password: 0}).lean().exec();
+export const deleteStudent = id => Student.findByIdAndDelete(id).select({password: 0}).exec();
 
-export const updateStudent = (id, data) => Student.findByIdAndUpdate(id, data, {returnDocument: 'after'}).select({scores: 0}).lean().exec();
+export const updateStudent = (id, data) => Student.findByIdAndUpdate(id, data, {returnDocument: 'after'}).select({scores: 0}).exec();
 
-export const findStudentsByName = name => Student.find({name: new RegExp(`^${name}$`, 'i')}).select({password: 0}).lean().exec();
+export const findStudentsByName = name => Student.find({name: new RegExp(`^${name}$`, 'i')}).select({password: 0}).exec();
 
 export const countStudentsByNames = names => {
     const regexConditions = names.map(name => ({name: {$regex: `^${name}$`, $options: 'i'}}));
